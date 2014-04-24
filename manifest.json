@@ -1,0 +1,38 @@
+{
+  "manifest_version": 2,
+
+  "name": "turbo-octo-meme",
+  "description": "A better bookmark manager",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["styles/styles.css"],
+      "js": ["scripts/scripts.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "http://*/",
+    "https://*/"
+  ],
+  "browser_action": {
+    "default_icon": "assets/img/icon.png",
+    "default_popup": "index.html"
+  },
+  "background": {
+    "scripts": [
+      "extension.js"
+    ]
+  },
+  "icons": {
+    "16": "assets/img/icon.png",
+    "48": "assets/img/icon.png",
+    "128": "assets/img/icon.png"
+  },
+  "web_accessible_resources": [
+    "assets/*"
+  ]
+}
