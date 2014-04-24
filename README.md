@@ -4,6 +4,10 @@ turbo-octo-meme
 A chrome extension that allows user to save url
 
 
+Build Instructions
+===============
+Navigate to `chrome://extensions` in your browser. Click "Load Unpacked Extensions" after enabling developer mode, and choose this folder.
+
 
 ##Proposal:
 Team members: Kanchalai Tanglertsampan, David Xu
@@ -23,3 +27,5 @@ Team members: Kanchalai Tanglertsampan, David Xu
 ### The Plan
 
 We will be building a chrome extension, so we will be utilizing all of the [developer API's](https://developer.chrome.com/extensions/index) google provides. We will be using LESS.js, coffeescript during development. If necessary. Depending on how complicated the UI will be, we will consider using require.js/bower/grunt, and backbone.js or ember.js as a front-end MVC framework.
+
+
