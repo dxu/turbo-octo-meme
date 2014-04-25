@@ -15,7 +15,8 @@
        */
       console.log('Generate the popup.');
       if (popup_div) {
-
+        popup_div.classList.add('octo-meme-shown');
+        return popup_div.classList.remove('octo-meme-hidden');
       } else {
         popup_div = document.createElement('div');
         popup_div.id = 'octo-meme-bg';
@@ -27,8 +28,17 @@
         save_div.appendChild(input_div);
         popup_div.appendChild(save_div);
         document.body.appendChild(popup_div);
+        popup_div.classList.add('octo-meme-shown');
         return input_div.addEventListener('keyup', function(evt) {
-          return console.log(evt.keyCode);
+          console.log(evt.keyCode);
+          switch (evt.keyCode) {
+            case 13:
+              return console.log('Submit for saving.');
+            case 27:
+              console.log('Hide the popup');
+              popup_div.classList.add('octo-meme-hidden');
+              return popup_div.classList.remove('octo-meme-shown');
+          }
         });
       }
     }
