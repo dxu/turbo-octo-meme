@@ -11,16 +11,36 @@ create_save_popup = ->
   bg_div.id = 'octo-meme-save-bg'
   save_div = document.createElement 'div'
   save_div.id = 'octo-meme-save'
+
+  # Input wrapper for tag and description
+  wrapper_div = document.createElement 'div'
+  wrapper_div.id = 'octo-meme-wrapper'
+
+  # input of tag
   input_div = document.createElement 'input'
   input_div.id = 'octo-meme-tags'
   input_div.setAttribute 'type', 'text'
-  save_div.appendChild input_div
+
+  # input of description
+  description_div = document.createElement 'input'
+  description_div.id = 'octo-meme-description'
+  description_div.setAttribute 'type', 'text'
+
+  wrapper_div.appendChild input_div
+  wrapper_div.appendChild description_div
+
+  save_div.appendChild wrapper_div
   bg_div.appendChild save_div
   input_div.addEventListener 'keyup', (evt) ->
+
     console.log evt
     switch evt.keyCode
       when 13
-        chrome.runtime.sendMessage({greeting: "Hello"}, (response) ->
+        tag_value = document.getElementById('octo-meme-tags').value
+        # Request body to be pass to the background
+        msg = {tag: tag_value,
+                }
+        chrome.runtime.sendMessage({tag: tag_value}, (response) ->
           console.log("response.farewell"))
 
         console.log 'Submit for saving.'

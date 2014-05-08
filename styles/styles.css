@@ -24,6 +24,22 @@
   opacity: 0;
 }
 
+#octo-meme-wrapper{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  box-sizing: border-box;
+  width: 350px;
+  height: 150px;
+  padding: 5px;
+  margin: 20px;
+  border: 1px solid #222;
+}
+
 #octo-meme-save {
   box-sizing: border-box;
   width: 400px;
@@ -39,7 +55,24 @@
 }
 
 #octo-meme-tags {
-  position: absolute;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  box-sizing: border-box;
+  width: 300px;
+  height: 30px;
+  padding: 5px;
+
+  border: 1px solid #222;
+  border-radius: 3px;
+}
+
+#octo-meme-description {
+  position: relative;
   top: 0;
   bottom: 0;
   left: 0;

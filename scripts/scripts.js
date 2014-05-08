@@ -13,22 +13,34 @@
      *   <input id="octo-meme-tags" type="text" />
      * </div>'
      */
-    var bg_div, input_div, save_div;
+    var bg_div, description_div, input_div, save_div, wrapper_div;
     bg_div = document.createElement('div');
     bg_div.id = 'octo-meme-save-bg';
     save_div = document.createElement('div');
     save_div.id = 'octo-meme-save';
+    wrapper_div = document.createElement('div');
+    wrapper_div.id = 'octo-meme-wrapper';
     input_div = document.createElement('input');
     input_div.id = 'octo-meme-tags';
     input_div.setAttribute('type', 'text');
-    save_div.appendChild(input_div);
+    description_div = document.createElement('input');
+    description_div.id = 'octo-meme-description';
+    description_div.setAttribute('type', 'text');
+    wrapper_div.appendChild(input_div);
+    wrapper_div.appendChild(description_div);
+    save_div.appendChild(wrapper_div);
     bg_div.appendChild(save_div);
     input_div.addEventListener('keyup', function(evt) {
+      var msg, tag_value;
       console.log(evt);
       switch (evt.keyCode) {
         case 13:
+          tag_value = document.getElementById('octo-meme-tags').value;
+          msg = {
+            tag: tag_value
+          };
           chrome.runtime.sendMessage({
-            greeting: "Hello"
+            tag: tag_value
           }, function(response) {
             return console.log("response.farewell");
           });
