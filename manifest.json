@@ -25,6 +25,7 @@
   },
   "background": {
     "scripts": [
+      "./lib/underscore-min.js",
       "extension.js"
     ]
   },
