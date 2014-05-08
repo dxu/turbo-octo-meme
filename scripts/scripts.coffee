@@ -96,8 +96,8 @@ document.addEventListener 'keyup', (evt) ->
       browser_div.classList.add('octo-meme-browser-shown')
   else if evt.keyCode == 27
     if popup_div
-      popup_div.classList.add('octo-meme-browser-hidden')
-      popup_div.classList.remove('octo-meme-browser-shown')
+      popup_div.classList.add('octo-meme-save-hidden')
+      popup_div.classList.remove('octo-meme-save-shown')
     else if browser_div
       browser_div.classList.add('octo-meme-browser-hidden')
       browser_div.classList.remove('octo-meme-browser-shown')
