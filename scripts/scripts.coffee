@@ -20,6 +20,9 @@ create_save_popup = ->
     console.log evt
     switch evt.keyCode
       when 13
+        chrome.runtime.sendMessage({greeting: "Hello"}, (response) ->
+          console.log("response.farewell"))
+
         console.log 'Submit for saving.'
       when 27
         # hide
@@ -66,9 +69,9 @@ create_browser_popup = ->
         bg_div.classList.remove('octo-meme-browser-shown')
   return bg_div
 
-
 document.addEventListener 'keyup', (evt) ->
   if evt.keyCode == 83 and evt.ctrlKey == true
+    # Ctrl+ s
     console.log 'Generate the popup.'
     if popup_div
       # show the popup div
@@ -80,6 +83,7 @@ document.addEventListener 'keyup', (evt) ->
       document.body.appendChild popup_div
       popup_div.classList.add('octo-meme-save-shown')
   else if evt.keyCode == 79 and evt.ctrlKey == true
+    # Ctrl+ o
     console.log 'Open link browser'
     if browser_div
       # show browser div
@@ -90,4 +94,10 @@ document.addEventListener 'keyup', (evt) ->
       browser_div = create_browser_popup()
       document.body.appendChild browser_div
       browser_div.classList.add('octo-meme-browser-shown')
-
+  else if evt.keyCode == 27
+    if popup_div
+      popup_div.classList.add('octo-meme-browser-hidden')
+      popup_div.classList.remove('octo-meme-browser-shown')
+    else if browser_div
+      browser_div.classList.add('octo-meme-browser-hidden')
+      browser_div.classList.remove('octo-meme-browser-shown')

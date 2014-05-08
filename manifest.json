@@ -3,6 +3,7 @@
 
   "name": "turbo-octo-meme",
   "description": "A better bookmark manager",
+  "minimum_chrome_version": "23",
   "version": "1.0",
   "content_scripts": [
     {

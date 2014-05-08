@@ -27,6 +27,11 @@
       console.log(evt);
       switch (evt.keyCode) {
         case 13:
+          chrome.runtime.sendMessage({
+            greeting: "Hello"
+          }, function(response) {
+            return console.log("response.farewell");
+          });
           return console.log('Submit for saving.');
         case 27:
           console.log('Hide the popup');
@@ -98,6 +103,14 @@
         browser_div = create_browser_popup();
         document.body.appendChild(browser_div);
         return browser_div.classList.add('octo-meme-browser-shown');
+      }
+    } else if (evt.keyCode === 27) {
+      if (popup_div) {
+        popup_div.classList.add('octo-meme-browser-hidden');
+        return popup_div.classList.remove('octo-meme-browser-shown');
+      } else if (browser_div) {
+        browser_div.classList.add('octo-meme-browser-hidden');
+        return browser_div.classList.remove('octo-meme-browser-shown');
       }
     }
   });
