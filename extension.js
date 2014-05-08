@@ -5,24 +5,28 @@
   message = function(msg) {};
 
   chrome.runtime.onMessage.addListener(function(request, sender, send_response) {
-    console.log('Sender', sender);
     if (sender.tab) {
+      console.log('Sender', sender);
+      console.log('message received on extension end', sender, request);
       console.log("From a content script tab url: " + sender.tab.url);
-      chrome.storage.sync.set({
-        'url': sender.tab.url
-      }, function() {
-        return message("URL SAVED");
-      });
       chrome.storage.sync.get('url', function(result) {
         return console.log("Get back from storage :" + result.url);
       });
-    } else {
-      console.log("From the extension");
-    }
-    if (request.greeting === "hello") {
-      sendResponse({
-        farewell: "goodbye"
-      });
+      switch (request.type) {
+        case 'upload':
+          chrome.storage.sync.set({
+            'url': sender.tab.url
+          }, function() {
+            return message("URL SAVED");
+          });
+          send_response({
+            farewell: "goodbye"
+          });
+          console.log('do something');
+          break;
+        case 'search':
+          console.log('call search');
+      }
     }
 
     /*

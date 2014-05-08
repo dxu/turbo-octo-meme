@@ -20,7 +20,7 @@ create_save_popup = ->
     console.log evt
     switch evt.keyCode
       when 13
-        chrome.runtime.sendMessage({greeting: "Hello"}, (response) ->
+        chrome.runtime.sendMessage({type: "upload"}, (response) ->
           console.log("response.farewell"))
 
         console.log 'Submit for saving.'
@@ -105,12 +105,13 @@ document.addEventListener 'keyup', (evt) ->
 
 
 chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
-  console.log 'message received'
-  switch request.type
-    when 'download'
-      console.log 'do something'
-    when 'search'
-      console.log 'search results', sender
+  unless sender.tab
+    console.log 'message received in tab'
+    switch request.type
+      when 'upload'
+        console.log 'do something'
+      when 'search'
+        console.log 'search results', sender
 
 
 

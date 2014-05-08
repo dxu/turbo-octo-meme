@@ -1,21 +1,25 @@
 message = (msg) ->
 
 chrome.runtime.onMessage.addListener (request, sender, send_response) ->
-  console.log 'Sender', sender
-  if (sender.tab)
-    console.log("From a content script tab url: " + sender.tab.url)
 
-    chrome.storage.sync.set {'url': sender.tab.url}, () ->
-      # Save result
-      message("URL SAVED")
+  if sender.tab
+    console.log 'Sender', sender
+    console.log 'message received on extension end', sender, request
+    console.log("From a content script tab url: " + sender.tab.url)
 
     chrome.storage.sync.get 'url', (result) ->
       # Get result
       console.log("Get back from storage :" + result.url)
-  else
-    console.log("From the extension")
-  if (request.greeting == "hello")
-    sendResponse({farewell: "goodbye"})
+
+    switch request.type
+      when 'upload'
+        chrome.storage.sync.set {'url': sender.tab.url}, () ->
+          # Save result
+          message("URL SAVED")
+        send_response({farewell: "goodbye"})
+        console.log 'do something'
+      when 'search'
+        console.log 'call search'
 
 
   ###

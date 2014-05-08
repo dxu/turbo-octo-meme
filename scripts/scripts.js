@@ -28,7 +28,7 @@
       switch (evt.keyCode) {
         case 13:
           chrome.runtime.sendMessage({
-            greeting: "Hello"
+            type: "upload"
           }, function(response) {
             return console.log("response.farewell");
           });
@@ -116,12 +116,14 @@
   });
 
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    console.log('message received');
-    switch (request.type) {
-      case 'download':
-        return console.log('do something');
-      case 'search':
-        return console.log('search results', sender);
+    if (!sender.tab) {
+      console.log('message received in tab');
+      switch (request.type) {
+        case 'upload':
+          return console.log('do something');
+        case 'search':
+          return console.log('search results', sender);
+      }
     }
   });
 
