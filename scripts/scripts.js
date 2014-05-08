@@ -115,4 +115,14 @@
     }
   });
 
+  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    console.log('message received');
+    switch (request.type) {
+      case 'download':
+        return console.log('do something');
+      case 'search':
+        return console.log('search results', sender);
+    }
+  });
+
 }).call(this);

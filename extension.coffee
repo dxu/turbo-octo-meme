@@ -1,6 +1,7 @@
 message = (msg) ->
 
 chrome.runtime.onMessage.addListener (request, sender, send_response) ->
+  console.log 'Sender', sender
   if (sender.tab)
     console.log("From a content script tab url: " + sender.tab.url)
 
@@ -15,4 +16,38 @@ chrome.runtime.onMessage.addListener (request, sender, send_response) ->
     console.log("From the extension")
   if (request.greeting == "hello")
     sendResponse({farewell: "goodbye"})
+
+
+  ###
+  # test messages
+  ###
+  chrome.tabs.sendMessage sender.tab.id,
+    type: 'test'
+    data:
+      one: 'two'
+    , (response) ->
+      console.log "Finished Search Results"
+
+
+
+###
+# takes in a query string
+###
+search = (query, tab_id) ->
+  chrome.storage.sync.get null, (result) ->
+    console.log 'Searching'
+    tokens = query.split(/[^0-9A-Za-z]/)
+    # pluck the keywords and tags attributes, and match the tokens
+    search_results = _.foldl result,
+      (memo, item) ->
+        # check if any of the keywords match, if any of the tags match
+        matches = _.intersection(result.keywords, result.tags, tokens).length
+        if matches then memo.push result
+        return memo
+      , []
+    # search_results now holds the objects that match the search.
+    # Pass a message to the front end
+    chrome.tabs.sendMessage tab_id, search_results: search_results,
+      (response) ->
+        console.log "Finished Search Results"
 

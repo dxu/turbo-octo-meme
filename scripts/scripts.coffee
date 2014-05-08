@@ -101,3 +101,16 @@ document.addEventListener 'keyup', (evt) ->
     else if browser_div
       browser_div.classList.add('octo-meme-browser-hidden')
       browser_div.classList.remove('octo-meme-browser-shown')
+
+
+
+chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
+  console.log 'message received'
+  switch request.type
+    when 'download'
+      console.log 'do something'
+    when 'search'
+      console.log 'search results', sender
+
+
+
