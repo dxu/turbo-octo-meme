@@ -27,18 +27,8 @@ chrome.runtime.onMessage.addListener (request, sender, send_response) ->
         # Store the object into the local storage
         chrome.storage.local.set obj, () ->
           console.log("save the obj")
-
-  ###
-  # test messages
-  ###
-  chrome.tabs.sendMessage sender.tab.id,
-    type: 'test'
-    data:
-      one: 'two'
-    , (response) ->
-      console.log "Finished Search Results"
-
-
+      when 'redirect'
+        navigate_to(request.data)
 
 ###
 # takes in a query string
@@ -75,3 +65,16 @@ chrome.runtime.onConnect.addListener (port) ->
     console.log 'Search port disconnected.'
 
 
+###
+# Checks for any existing tab with the same url and switches to it, or opens a new tab
+###
+navigate_to = (url) ->
+  # pass message to runtime
+  chrome.tabs.getAllInWindow null, (tabs) ->
+    for tab in tabs
+      if tab.url == url
+        # switch active tab to it
+        chrome.tabs.update(tab.id, {active: true})
+        return
+    # otherwise, open a new tab with it
+    chrome.tabs.create url:url

@@ -58,6 +58,22 @@ create_save_popup = ->
         bg_div.classList.remove('octo-meme-save-shown')
   return bg_div
 
+
+###
+# Checks for any existing tab with the same url and switches to it, or opens a new tab
+###
+navigate_to = (url) ->
+  # pass message to runtime
+  chrome.runtime.sendMessage(
+    type: 'redirect'
+    data: url
+    , (response) ->
+      console.log "Should be redirected"
+  )
+
+
+
+
 ###
 #  generates a search item template
 #  <li class="octo-meme-browser-search-item"></li>
@@ -68,6 +84,7 @@ create_browser_search_item = (data) ->
   list_div.classList.add('octo-meme-browser-search-item')
   list_div.innerHTML =
     "#{data.url} #{data.tags.join(' ')} #{data.description}"
+  list_div.dataset.url = data.url
   return list_div
 
 ###
@@ -120,6 +137,20 @@ create_browser_popup = ->
     switch evt.keyCode
       when 13
         console.log 'Open new link.'
+        search_list_children = search_list.childNodes
+        if search_list_children.length
+          # find highlighted link and navigate to it
+          for child in search_list_children
+            if child.classList.contains('octo-meme-search-highlight')
+              console.log('this is the node')
+              navigate_to(child.dataset.url)
+
+
+
+
+
+
+
       when 27
         # hide
         console.log 'Hide the browser'
