@@ -40,7 +40,7 @@ create_save_popup = ->
         # Request body to be pass to the background
         msg = {tag: tag_value,
                 }
-        chrome.runtime.sendMessage({tag: tag_value}, (response) ->
+        chrome.runtime.sendMessage({type: "upload"}, (response) ->
           console.log("response.farewell"))
 
         console.log 'Submit for saving.'
@@ -116,8 +116,22 @@ document.addEventListener 'keyup', (evt) ->
       browser_div.classList.add('octo-meme-browser-shown')
   else if evt.keyCode == 27
     if popup_div
-      popup_div.classList.add('octo-meme-browser-hidden')
-      popup_div.classList.remove('octo-meme-browser-shown')
+      popup_div.classList.add('octo-meme-save-hidden')
+      popup_div.classList.remove('octo-meme-save-shown')
     else if browser_div
       browser_div.classList.add('octo-meme-browser-hidden')
       browser_div.classList.remove('octo-meme-browser-shown')
+
+
+
+chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
+  unless sender.tab
+    console.log 'message received in tab'
+    switch request.type
+      when 'upload'
+        console.log 'do something'
+      when 'search'
+        console.log 'search results', sender
+
+
+
