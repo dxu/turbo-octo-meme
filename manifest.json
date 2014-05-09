@@ -17,7 +17,8 @@
     "storage",
     "contextMenus",
     "http://*/",
-    "https://*/"
+    "https://*/",
+    "tabs"
   ],
   "browser_action": {
     "default_icon": "assets/img/icon.png",
