@@ -68,7 +68,7 @@
      * </div>
      *
      */
-    var bg_div, input_div, search_list;
+    var bg_div, input_div, search_list, search_port;
     bg_div = document.createElement('div');
     bg_div.id = 'octo-meme-browser-bg';
     browser_div = document.createElement('div');
@@ -81,6 +81,18 @@
     search_list.id = 'octo-meme-browser-search-list';
     browser_div.appendChild(search_list);
     bg_div.appendChild(browser_div);
+    search_port = void 0;
+    input_div.addEventListener('focus', function(evt) {
+      search_port = chrome.runtime.connect({
+        name: 'search'
+      });
+      return search_port.onMessage.addListener(function(msg) {
+        return console.log('browser got message', msg);
+      });
+    });
+    input_div.addEventListener('blur', function(evt) {
+      return search_port.disconnect();
+    });
     input_div.addEventListener('keyup', function(evt) {
       console.log(evt);
       switch (evt.keyCode) {
@@ -90,6 +102,12 @@
           console.log('Hide the browser');
           bg_div.classList.add('octo-meme-browser-hidden');
           return bg_div.classList.remove('octo-meme-browser-shown');
+        default:
+          if (search_port) {
+            return search_port.postMessage({
+              query: input_div.value
+            });
+          }
       }
     });
     return bg_div;
@@ -133,8 +151,6 @@
       switch (request.type) {
         case 'upload':
           return console.log('do something');
-        case 'search':
-          return console.log('search results', sender);
       }
     }
   });

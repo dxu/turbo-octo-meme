@@ -23,9 +23,6 @@
             farewell: "goodbye"
           });
           console.log('do something');
-          break;
-        case 'search':
-          console.log('call search');
       }
     }
 
@@ -47,7 +44,7 @@
    * takes in a query string
    */
 
-  search = function(query, tab_id) {
+  search = function(query, port) {
     return chrome.storage.sync.get(null, function(result) {
       var search_results, tokens;
       console.log('Searching');
@@ -60,12 +57,25 @@
         }
         return memo;
       }, []);
-      return chrome.tabs.sendMessage(tab_id, {
-        search_results: search_results
-      }, function(response) {
-        return console.log("Finished Search Results");
+      return port.postMessage({
+        results: search_results
       });
     });
   };
+
+
+  /*
+   * Use chrome extension "ports" for search
+   */
+
+  chrome.runtime.onConnect.addListener(function(port) {
+    console.assert(port.name === 'search');
+    port.onMessage.addListener(function(msg) {
+      return search(msg.query, port);
+    });
+    return port.onDisconnect.addListener(function(m) {
+      return console.log('Search port disconnected.');
+    });
+  });
 
 }).call(this);

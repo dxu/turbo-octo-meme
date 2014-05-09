@@ -76,6 +76,16 @@ create_browser_popup = ->
   search_list.id = 'octo-meme-browser-search-list'
   browser_div.appendChild search_list
   bg_div.appendChild browser_div
+  search_port = undefined
+
+
+  input_div.addEventListener 'focus', (evt) ->
+    search_port = chrome.runtime.connect name: 'search'
+    search_port.onMessage.addListener (msg) ->
+      console.log 'browser got message', msg
+
+  input_div.addEventListener 'blur', (evt) ->
+    search_port.disconnect()
 
   input_div.addEventListener 'keyup', (evt) ->
     console.log evt
@@ -87,6 +97,11 @@ create_browser_popup = ->
         console.log 'Hide the browser'
         bg_div.classList.add('octo-meme-browser-hidden')
         bg_div.classList.remove('octo-meme-browser-shown')
+      else
+        # debounce search event
+        if search_port then search_port.postMessage query: input_div.value
+
+
   return bg_div
 
 document.addEventListener 'keyup', (evt) ->
@@ -130,8 +145,8 @@ chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
     switch request.type
       when 'upload'
         console.log 'do something'
-      when 'search'
-        console.log 'search results', sender
+      # when 'search'
+      #   console.log 'search results', sender
 
 
 

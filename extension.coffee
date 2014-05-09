@@ -17,8 +17,8 @@ chrome.runtime.onMessage.addListener (request, sender, send_response) ->
           message("URL SAVED")
         send_response({farewell: "goodbye"})
         console.log 'do something'
-      when 'search'
-        console.log 'call search'
+      # when 'search'
+      #   console.log 'call search'
 
 
   ###
@@ -36,7 +36,7 @@ chrome.runtime.onMessage.addListener (request, sender, send_response) ->
 ###
 # takes in a query string
 ###
-search = (query, tab_id) ->
+search = (query, port) ->
   chrome.storage.sync.get null, (result) ->
     console.log 'Searching'
     tokens = query.split(/[^0-9A-Za-z]/)
@@ -50,7 +50,19 @@ search = (query, tab_id) ->
       , []
     # search_results now holds the objects that match the search.
     # Pass a message to the front end
-    chrome.tabs.sendMessage tab_id, search_results: search_results,
-      (response) ->
-        console.log "Finished Search Results"
+    port.postMessage results: search_results
+
+
+###
+# Use chrome extension "ports" for search
+###
+
+chrome.runtime.onConnect.addListener (port) ->
+  console.assert(port.name == 'search')
+  port.onMessage.addListener (msg) ->
+    # msg contains the data
+    search msg.query, port
+  port.onDisconnect.addListener (m) ->
+    console.log 'Search port disconnected.'
+
 
