@@ -74,6 +74,10 @@ create_save_popup = ->
     switch evt.keyCode
       when 13
         save_url()
+  description_div.addEventListener 'keyup', (evt) ->
+    switch evt.keyCode
+      when 13
+        save_url()
   # TODO: remove
   popup_input_div = input_div
   return bg_div
@@ -201,7 +205,8 @@ create_browser_popup = ->
 
 
 document.addEventListener 'keyup', (evt) ->
-  if evt.keyCode == 83 and evt.ctrlKey == true
+  if (evt.keyCode == 83 or evt.keyCode == 76 ) and evt.ctrlKey == true
+    evt.preventDefault()
     # Ctrl+ s
     if popup_div
       # show the popup div
@@ -215,6 +220,7 @@ document.addEventListener 'keyup', (evt) ->
     # give focus to input div
     popup_input_div.focus()
   else if evt.keyCode == 79 and evt.ctrlKey == true
+    evt.preventDefault()
     # Ctrl+ o
     if browser_div
       # show browser div
