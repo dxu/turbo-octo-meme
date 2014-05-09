@@ -49,7 +49,7 @@
       var search_results, tokens;
       console.log('Searching');
       tokens = query.split(/[^0-9A-Za-z]/);
-      search_results = _.foldl(result, function(memo, item) {
+      search_results = _.foldl(_.values(result), function(memo, item) {
         var matches;
         matches = _.intersection(result.keywords, result.tags, tokens).length;
         if (matches) {

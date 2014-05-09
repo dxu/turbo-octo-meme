@@ -51,19 +51,30 @@ create_save_popup = ->
         bg_div.classList.remove('octo-meme-save-shown')
   return bg_div
 
+###
+#  generates a search item template
+#  <li class="octo-meme-browser-search-item"></li>
+#  Takes in data
+###
+create_browser_search_item = (data) ->
+  list_div = document.createElement 'li'
+  list_div.classList.add('octo-meme-browser-search-item')
+  list_div.innerHTML = data.url + ' this is a test' + Math.random()
+  return list_div
+
+###
+#
+# <div id="octo-meme-browser">
+#   <input id="octo-meme-browser-search" type="text" />
+#   <ul id="octo-meme-browser-search-list" >
+#     <!--  programatically generated
+#       <li class="octo-meme-browser-search-item"></li>
+#     -->
+#   </ul>
+# </div>
+#
+###
 create_browser_popup = ->
-  ###
-  #
-  # <div id="octo-meme-browser">
-  #   <input id="octo-meme-browser-search" type="text" />
-  #   <ul id="octo-meme-browser-search-list" >
-  #     <!--  programatically generated
-  #       <li class="octo-meme-browser-search-item"></li>
-  #     -->
-  #   </ul>
-  # </div>
-  #
-  ###
   bg_div = document.createElement 'div'
   bg_div.id = 'octo-meme-browser-bg'
   browser_div = document.createElement 'div'
@@ -78,11 +89,28 @@ create_browser_popup = ->
   bg_div.appendChild browser_div
   search_port = undefined
 
-
   input_div.addEventListener 'focus', (evt) ->
     search_port = chrome.runtime.connect name: 'search'
     search_port.onMessage.addListener (msg) ->
+      # gets search results under `msg.results`
+      # clear all children
+      while search_list.firstChild
+        search_list.removeChild search_list.firstChild
       console.log 'browser got message', msg
+      msg.results = [
+        {url: 'one'}
+        {url: 'two'}
+        {url: 'three'}
+      ]
+
+
+      for item in msg.results
+        list_item = create_browser_search_item msg.results
+        search_list.appendChild list_item
+
+
+
+
 
   input_div.addEventListener 'blur', (evt) ->
     search_port.disconnect()
@@ -100,9 +128,10 @@ create_browser_popup = ->
       else
         # debounce search event
         if search_port then search_port.postMessage query: input_div.value
-
-
   return bg_div
+
+
+
 
 document.addEventListener 'keyup', (evt) ->
   if evt.keyCode == 83 and evt.ctrlKey == true
