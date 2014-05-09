@@ -1,5 +1,7 @@
 popup_div = undefined
+popup_input_div = undefined
 browser_div = undefined
+browser_input_div = undefined
 
 save_url = ->
   # Passing message to the background script
@@ -72,6 +74,8 @@ create_save_popup = ->
     switch evt.keyCode
       when 13
         save_url()
+  # TODO: remove
+  popup_input_div = input_div
   return bg_div
 
 
@@ -107,8 +111,8 @@ create_browser_search_item = (data) ->
   desc_div = document.createElement 'p'
   desc_div.innerHTML = data.description
   list_div.dataset.url = data.url
-  list_div.appendChild desc_div
   list_div.appendChild domain_div
+  list_div.appendChild desc_div
   return list_div
 
 ###
@@ -188,6 +192,9 @@ create_browser_popup = ->
             next_highlight =
               if index + 1 >= search_list_children.length then 0 else index + 1
         search_list_children[next_highlight].classList.add('octo-meme-search-highlight')
+
+  # TODO: remove
+  browser_input_div = input_div
   return bg_div
 
 
@@ -205,6 +212,8 @@ document.addEventListener 'keyup', (evt) ->
       popup_div = create_save_popup()
       document.body.appendChild popup_div
       popup_div.classList.add('octo-meme-save-shown')
+    # give focus to input div
+    popup_input_div.focus()
   else if evt.keyCode == 79 and evt.ctrlKey == true
     # Ctrl+ o
     if browser_div
@@ -217,6 +226,8 @@ document.addEventListener 'keyup', (evt) ->
 
       document.body.appendChild browser_div
       browser_div.classList.add('octo-meme-browser-shown')
+    # give focus to input div
+    browser_input_div.focus()
   else if evt.keyCode == 27
     hide_popup_browser()
 

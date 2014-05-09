@@ -76,8 +76,10 @@
   box-shadow: none;
 
   border: none;
-  border-bottom: 1px solid rgba(230, 60, 28, 1.0) !important;
-  color: rgba(230, 60, 28, 1.0) !important;
+  /* border-bottom: 1px solid rgba(230, 60, 28, 1.0) !important;*/
+  /* color: rgba(230, 60, 28, 1.0) !important;*/
+  border-bottom: 1px solid rgba(255, 255, 255, 1.0) !important;
+  color: rgba(255, 255, 255, 1.0) !important;
 }
 
 #octo-meme-save #octo-meme-tags:focus,
@@ -118,8 +120,10 @@
   background-color: transparent;
   box-shadow: none;
   border: none;
-  border-bottom: 1px solid rgba(230, 60, 28, 1.0) !important;
-  color: rgba(230, 60, 28, 1.0) !important;
+  /* border-bottom: 1px solid rgba(230, 60, 28, 1.0) !important;*/
+  /* color: rgba(230, 60, 28, 1.0) !important;*/
+  border-bottom: 1px solid rgba(255, 255, 255, 1.0) !important;
+  color: rgba(255, 255, 255, 1.0) !important;
 }
 
 .octo-meme-search-highlight {
@@ -130,11 +134,11 @@
   list-style-type: none;
 }
 
-ul{
+#octo-meme-browser-search-list {
   list-style-type: none !important;
   margin-left: 0px !important;
   margin-bottom: 0px !important;
-  align: left;
+  padding: 0 !important;
 }
 
 .octo-meme-save-hidden {
