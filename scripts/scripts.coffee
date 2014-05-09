@@ -24,9 +24,16 @@ hide_popup_browser = ->
 
 create_save_popup = ->
   ###
-  # '<div id="octo-meme-save">
-  #   <input id="octo-meme-tags" type="text" />
-  # </div>'
+  # <div id="octo-meme-save">
+  #   <div id="octo-meme-wrapper">
+  #     <img src="" />
+  #     <p> TAGS </p>
+  #     <input id="octo-meme-tags" type="text" />
+  #     <img src="" />
+  #     <p> Description </p>
+  #     <input id="octo-meme-description" type="text" />
+  #   </div>
+  # </div>
   ###
   bg_div = document.createElement 'div'
   bg_div.id = 'octo-meme-save-bg'
@@ -47,7 +54,16 @@ create_save_popup = ->
   description_div.id = 'octo-meme-description'
   description_div.setAttribute 'type', 'text'
 
+  # paragraph tag for TAGS
+  tags_p_div = document.createElement 'p'
+  tags_p_div.innerHTML = 'TAGS'
+  # paragraph tag for DESCRIPTION
+  desc_p_div = document.createElement 'p'
+  desc_p_div.innerHTML = 'DESCRIPTION'
+
+  wrapper_div.appendChild tags_p_div
   wrapper_div.appendChild input_div
+  wrapper_div.appendChild desc_p_div
   wrapper_div.appendChild description_div
 
   save_div.appendChild wrapper_div
