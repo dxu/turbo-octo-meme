@@ -11,8 +11,16 @@ save_url = ->
       tag: tag_value
       description: des_value
 
-  chrome.runtime.sendMessage(msg, (response) ->
-    console.log("response.farewell"))
+  chrome.runtime.sendMessage msg, (response) ->
+    console.log("Sent save request.")
+
+hide_popup_browser = ->
+  if popup_div
+    popup_div.classList.add('octo-meme-save-hidden')
+    popup_div.classList.remove('octo-meme-save-shown')
+  else if browser_div
+    browser_div.classList.add('octo-meme-browser-hidden')
+    browser_div.classList.remove('octo-meme-browser-shown')
 
 create_save_popup = ->
   ###
@@ -45,17 +53,9 @@ create_save_popup = ->
   save_div.appendChild wrapper_div
   bg_div.appendChild save_div
   input_div.addEventListener 'keyup', (evt) ->
-
-    console.log evt
     switch evt.keyCode
       when 13
-        console.log 'Submit for saving.'
         save_url()
-      when 27
-        # hide
-        console.log 'Hide the popup'
-        bg_div.classList.add('octo-meme-save-hidden')
-        bg_div.classList.remove('octo-meme-save-shown')
   return bg_div
 
 
@@ -68,7 +68,7 @@ navigate_to = (url) ->
     type: 'redirect'
     data: url
     , (response) ->
-      console.log "Should be redirected"
+      console.log "Redirect request sent."
   )
 
 
@@ -121,7 +121,6 @@ create_browser_popup = ->
       # clear all children
       while search_list.firstChild
         search_list.removeChild search_list.firstChild
-      console.log 'browser got message', msg
       for item in msg.results
         list_item = create_browser_search_item item
         search_list.appendChild list_item
@@ -133,30 +132,15 @@ create_browser_popup = ->
     search_port.disconnect()
 
   input_div.addEventListener 'keyup', (evt) ->
-    console.log evt
     switch evt.keyCode
       when 13
-        console.log 'Open new link.'
         search_list_children = search_list.childNodes
         if search_list_children.length
           # find highlighted link and navigate to it
           for child in search_list_children
             if child.classList.contains('octo-meme-search-highlight')
-              console.log('this is the node')
               navigate_to(child.dataset.url)
-
-
-
-
-
-
-
-      when 27
-        # hide
-        console.log 'Hide the browser'
-        bg_div.classList.add('octo-meme-browser-hidden')
-        bg_div.classList.remove('octo-meme-browser-shown')
-      when 9
+      when 9  # do nothing, because keydown should have proc'ed
       else
         # debounce search event
         if search_port then search_port.postMessage query: input_div.value
@@ -167,7 +151,6 @@ create_browser_popup = ->
       when 9
         # select through the children
         evt.preventDefault()
-        console.log 'hits tab'
         search_list_children = search_list.childNodes
         next_highlight = 0
         for child, index in search_list_children
@@ -176,8 +159,6 @@ create_browser_popup = ->
             child.classList.remove('octo-meme-search-highlight')
             next_highlight =
               if index + 1 >= search_list_children.length then 0 else index + 1
-
-
         search_list_children[next_highlight].classList.add('octo-meme-search-highlight')
   return bg_div
 
@@ -187,7 +168,6 @@ create_browser_popup = ->
 document.addEventListener 'keyup', (evt) ->
   if evt.keyCode == 83 and evt.ctrlKey == true
     # Ctrl+ s
-    console.log 'Generate the popup.'
     if popup_div
       # show the popup div
       popup_div.classList.add('octo-meme-save-shown')
@@ -199,7 +179,6 @@ document.addEventListener 'keyup', (evt) ->
       popup_div.classList.add('octo-meme-save-shown')
   else if evt.keyCode == 79 and evt.ctrlKey == true
     # Ctrl+ o
-    console.log 'Open link browser'
     if browser_div
       # show browser div
       browser_div.classList.add('octo-meme-browse-shown')
@@ -210,23 +189,20 @@ document.addEventListener 'keyup', (evt) ->
       document.body.appendChild browser_div
       browser_div.classList.add('octo-meme-browser-shown')
   else if evt.keyCode == 27
-    if popup_div
-      popup_div.classList.add('octo-meme-save-hidden')
-      popup_div.classList.remove('octo-meme-save-shown')
-    else if browser_div
-      browser_div.classList.add('octo-meme-browser-hidden')
-      browser_div.classList.remove('octo-meme-browser-shown')
+    hide_popup_browser()
 
 
 
 chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
   unless sender.tab
-    console.log 'message received in tab'
     switch request.type
       when 'upload'
-        console.log 'do something'
-      # when 'search'
-      #   console.log 'search results', sender
-
+        console.log 'Finished uploading'
+        if request.data == 'success'
+          hide_popup_browser()
+      when 'redirect'
+        console.log 'Finished redirecting'
+        if request.data
+          hide_popup_browser()
 
 

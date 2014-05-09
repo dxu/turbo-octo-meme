@@ -6,9 +6,6 @@ chrome.runtime.onMessage.addListener (request, sender, send_response) ->
     console.log 'message received on extension end', sender, request
     console.log("From a content script tab url: " + sender.tab.url)
 
-    chrome.storage.local.get 'url', (result) ->
-      # Get result
-      console.log("Get back from storage :" + result.url)
 
     switch request.type
       when 'upload'
@@ -25,10 +22,24 @@ chrome.runtime.onMessage.addListener (request, sender, send_response) ->
           description : request.data.description
           url : sender.tab.url
         # Store the object into the local storage
-        chrome.storage.local.set obj, () ->
-          console.log("save the obj")
+        chrome.storage.local.set obj, ->
+          console.log("Saved the obj")
+          success = if chrome.runtime.lastError then 'error' else 'success'
+          chrome.tabs.sendMessage sender.tab.id,
+            type: 'upload'
+            data: success
+            , ->
+              console.log "Response sent: #{success}"
       when 'redirect'
-        navigate_to(request.data)
+        navigate_to request.data, (tab) ->
+          console.log 'hitttttttt'
+          chrome.tabs.sendMessage sender.tab.id,
+            type: 'redirect'
+            data: tab.id
+            , ->
+              console.log "Response sent: #{success} tab created"
+
+
 
 ###
 # takes in a query string
@@ -68,7 +79,7 @@ chrome.runtime.onConnect.addListener (port) ->
 ###
 # Checks for any existing tab with the same url and switches to it, or opens a new tab
 ###
-navigate_to = (url) ->
+navigate_to = (url, cb) ->
   # pass message to runtime
   chrome.tabs.getAllInWindow null, (tabs) ->
     for tab in tabs
@@ -77,4 +88,5 @@ navigate_to = (url) ->
         chrome.tabs.update(tab.id, {active: true})
         return
     # otherwise, open a new tab with it
-    chrome.tabs.create url:url
+    chrome.tabs.create url:url, cb
+
