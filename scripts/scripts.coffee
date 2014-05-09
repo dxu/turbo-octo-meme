@@ -102,14 +102,11 @@ create_browser_popup = ->
         {url: 'two'}
         {url: 'three'}
       ]
-
-
       for item in msg.results
         list_item = create_browser_search_item msg.results
         search_list.appendChild list_item
-
-
-
+      # highlight the first item
+      search_list.firstChild.classList.add('octo-meme-search-highlight')
 
 
   input_div.addEventListener 'blur', (evt) ->
@@ -125,9 +122,29 @@ create_browser_popup = ->
         console.log 'Hide the browser'
         bg_div.classList.add('octo-meme-browser-hidden')
         bg_div.classList.remove('octo-meme-browser-shown')
+      when 9
       else
         # debounce search event
         if search_port then search_port.postMessage query: input_div.value
+
+  # specifically for tabs to prevent the event from propagating
+  input_div.addEventListener 'keydown', (evt) ->
+    switch evt.keyCode
+      when 9
+        # select through the children
+        evt.preventDefault()
+        console.log 'hits tab'
+        search_list_children = search_list.childNodes
+        next_highlight = 0
+        for child, index in search_list_children
+          # check if highlight, if so, remove it
+          if child.classList.contains('octo-meme-search-highlight')
+            child.classList.remove('octo-meme-search-highlight')
+            next_highlight =
+              if index + 1 >= search_list_children.length then 0 else index + 1
+
+
+        search_list_children[next_highlight].classList.add('octo-meme-search-highlight')
   return bg_div
 
 

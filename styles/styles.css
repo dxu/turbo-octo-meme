@@ -119,6 +119,10 @@
   border-radius: 3px;
 }
 
+.octo-meme-search-highlight {
+  background-color: yellow;
+}
+
 .octo-meme-save-hidden {
   -webkit-animation: octo-meme-hide 0.5s forwards;
 }

@@ -103,7 +103,7 @@
         name: 'search'
       });
       return search_port.onMessage.addListener(function(msg) {
-        var item, list_item, _i, _len, _ref, _results;
+        var item, list_item, _i, _len, _ref;
         while (search_list.firstChild) {
           search_list.removeChild(search_list.firstChild);
         }
@@ -118,13 +118,12 @@
           }
         ];
         _ref = msg.results;
-        _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           item = _ref[_i];
           list_item = create_browser_search_item(msg.results);
-          _results.push(search_list.appendChild(list_item));
+          search_list.appendChild(list_item);
         }
-        return _results;
+        return search_list.firstChild.classList.add('octo-meme-search-highlight');
       });
     });
     input_div.addEventListener('blur', function(evt) {
@@ -139,12 +138,32 @@
           console.log('Hide the browser');
           bg_div.classList.add('octo-meme-browser-hidden');
           return bg_div.classList.remove('octo-meme-browser-shown');
+        case 9:
+          break;
         default:
           if (search_port) {
             return search_port.postMessage({
               query: input_div.value
             });
           }
+      }
+    });
+    input_div.addEventListener('keydown', function(evt) {
+      var child, index, next_highlight, search_list_children, _i, _len;
+      switch (evt.keyCode) {
+        case 9:
+          evt.preventDefault();
+          console.log('hits tab');
+          search_list_children = search_list.childNodes;
+          next_highlight = 0;
+          for (index = _i = 0, _len = search_list_children.length; _i < _len; index = ++_i) {
+            child = search_list_children[index];
+            if (child.classList.contains('octo-meme-search-highlight')) {
+              child.classList.remove('octo-meme-search-highlight');
+              next_highlight = index + 1 >= search_list_children.length ? 0 : index + 1;
+            }
+          }
+          return search_list_children[next_highlight].classList.add('octo-meme-search-highlight');
       }
     });
     return bg_div;
