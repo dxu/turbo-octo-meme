@@ -19,7 +19,22 @@ chrome.runtime.onMessage.addListener (request, sender, send_response) ->
         console.log 'do something'
       # when 'search'
       #   console.log 'call search'
-
+      when 'download'
+        # Process download message
+        console.log 'Get download message'
+        # Parsing tags
+        tags_list = request.data.tag.split(" ")
+        # Parsing keywords from the url
+        keywords_list = sender.tab.url.split(/[^0-9A-Za-z]/)
+        obj = {}
+        obj[sender.tab.url] =
+          tags : tags_list
+          keywords : keywords_list
+          description : request.data.description
+          url : sender.tab.url
+        # Store the object into the local storage
+        chrome.storage.local.set obj, () ->
+          console.log("save the obj")
 
   ###
   # test messages

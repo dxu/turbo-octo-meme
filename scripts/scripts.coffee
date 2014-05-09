@@ -1,6 +1,19 @@
 popup_div = undefined
 browser_div = undefined
 
+save_url = ->
+  # Passing message to the background script
+  tag_value = document.getElementById('octo-meme-tags').value
+  des_value = document.getElementById('octo-meme-description').value
+  msg =
+    type: 'download'
+    data:
+      tag: tag_value
+      description: des_value
+
+  chrome.runtime.sendMessage(msg, (response) ->
+    console.log("response.farewell"))
+
 create_save_popup = ->
   ###
   # '<div id="octo-meme-save">
@@ -36,14 +49,8 @@ create_save_popup = ->
     console.log evt
     switch evt.keyCode
       when 13
-        tag_value = document.getElementById('octo-meme-tags').value
-        # Request body to be pass to the background
-        msg = {tag: tag_value,
-                }
-        chrome.runtime.sendMessage({type: "upload"}, (response) ->
-          console.log("response.farewell"))
-
         console.log 'Submit for saving.'
+        save_url()
       when 27
         # hide
         console.log 'Hide the popup'
