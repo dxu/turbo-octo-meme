@@ -92,20 +92,27 @@ navigate_to = (url) ->
 
 ###
 #  generates a search item template
-#  <li class="octo-meme-browser-search-item"></li>
+#  <li class="octo-meme-browser-search-item">
+#    <p class="octo-meme-browser-search-item-domain"> DOMAIN </p>
+#    <p class="octo-meme-browser-search-item-desc"> description </p>
+#  </li>
 #  Takes in data
 ###
 create_browser_search_item = (data) ->
   list_div = document.createElement 'li'
   list_div.classList.add('octo-meme-browser-search-item')
-  list_div.innerHTML =
-    "#{data.url} #{data.tags.join(' ')} #{data.description}"
+
+  domain_div = document.createElement 'p'
+  domain_div.innerHTML = data.url
+  desc_div = document.createElement 'p'
+  desc_div.innerHTML = data.description
   list_div.dataset.url = data.url
   return list_div
 
 ###
 #
 # <div id="octo-meme-browser">
+#   <p> SEARCH </p>
 #   <input id="octo-meme-browser-search" type="text" />
 #   <ul id="octo-meme-browser-search-list" >
 #     <!--  programatically generated
@@ -120,9 +127,12 @@ create_browser_popup = ->
   bg_div.id = 'octo-meme-browser-bg'
   browser_div = document.createElement 'div'
   browser_div.id = 'octo-meme-browser'
+  search_text_div = document.createElement 'p'
+  search_text_div.innerHTML = 'SEARCH'
   input_div = document.createElement 'input'
   input_div.id = 'octo-meme-browser-search'
   input_div.setAttribute 'type', 'text'
+  browser_div.appendChild search_text_div
   browser_div.appendChild input_div
   search_list = document.createElement 'ul'
   search_list.id = 'octo-meme-browser-search-list'
@@ -141,7 +151,7 @@ create_browser_popup = ->
         list_item = create_browser_search_item item
         search_list.appendChild list_item
       # highlight the first item
-      search_list.firstChild.classList.add('octo-meme-search-highlight')
+      search_list.firstChild?.classList.add('octo-meme-search-highlight')
 
 
   input_div.addEventListener 'blur', (evt) ->

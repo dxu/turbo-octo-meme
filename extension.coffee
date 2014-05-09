@@ -49,7 +49,6 @@ search = (query, port) ->
     console.log 'Searching'
     tokens = query.split(/[^0-9A-Za-z]/)
     # pluck the keywords and tags attributes, and match the tokens
-    console.log(result)
     search_results = _.foldl _.values(result),
       (memo, item) ->
         # check if any of the keywords match, if any of the tags match
