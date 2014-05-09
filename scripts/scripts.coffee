@@ -170,8 +170,8 @@ document.addEventListener 'keyup', (evt) ->
     # Ctrl+ s
     if popup_div
       # show the popup div
+      popup_div.classList.remove('octo-meme-save-hidden')
       popup_div.classList.add('octo-meme-save-shown')
-      popup_div.classList.remove('octo-meme-hidden')
     else
       # show popup
       popup_div = create_save_popup()
@@ -181,8 +181,8 @@ document.addEventListener 'keyup', (evt) ->
     # Ctrl+ o
     if browser_div
       # show browser div
-      browser_div.classList.add('octo-meme-browser-shown')
       browser_div.classList.remove('octo-meme-browser-hidden')
+      browser_div.classList.add('octo-meme-browser-shown')
     else
       # create browser div and show it
       browser_div = create_browser_popup()
