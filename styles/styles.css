@@ -13,7 +13,7 @@
 
 #octo-meme-save-bg p{
   margin: 0 !important;
-  color: rgba(230, 60, 28, 1.0) !important;
+  color: #FFF;
 }
 
 #octo-meme-browser-bg {
@@ -31,7 +31,7 @@
 
 #octo-meme-browser-bg p{
   margin: 0 !important;
-  color: rgba(230, 60, 28, 1.0) !important;
+  color: #FFF;
 }
 
 #octo-meme-wrapper {
@@ -123,7 +123,18 @@
 }
 
 .octo-meme-search-highlight {
-  background-color: yellow;
+  background-color: rgba(230, 60, 28, 1.0);
+  margin-top: 10px;
+  margin-left: 0px;
+  margin-bottom: 10px;
+  list-style-type: none;
+}
+
+ul{
+  list-style-type: none !important;
+  margin-left: 0px !important;
+  margin-bottom: 0px !important;
+  align: left;
 }
 
 .octo-meme-save-hidden {

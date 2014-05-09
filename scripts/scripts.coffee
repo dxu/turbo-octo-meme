@@ -107,6 +107,8 @@ create_browser_search_item = (data) ->
   desc_div = document.createElement 'p'
   desc_div.innerHTML = data.description
   list_div.dataset.url = data.url
+  list_div.appendChild desc_div
+  list_div.appendChild domain_div
   return list_div
 
 ###
@@ -207,17 +209,10 @@ document.addEventListener 'keyup', (evt) ->
     # Ctrl+ o
     if browser_div
       # show browser div
-      # Reset the input value box
-      document.getElementById('octo-meme-tags').value = ""
-      document.getElementById('octo-meme-description').value = ""
-
       browser_div.classList.remove('octo-meme-browser-hidden')
       browser_div.classList.add('octo-meme-browser-shown')
     else
       # create browser div and show it
-      # Reset the input value box
-      document.getElementById('octo-meme-tags').value = ""
-      document.getElementById('octo-meme-description').value = ""
       browser_div = create_browser_popup()
 
       document.body.appendChild browser_div
