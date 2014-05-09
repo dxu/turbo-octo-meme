@@ -12,14 +12,6 @@ chrome.runtime.onMessage.addListener (request, sender, send_response) ->
 
     switch request.type
       when 'upload'
-        chrome.storage.sync.set {'url': sender.tab.url}, () ->
-          # Save result
-          message("URL SAVED")
-        send_response({farewell: "goodbye"})
-        console.log 'do something'
-      # when 'search'
-      #   console.log 'call search'
-      when 'download'
         # Process download message
         console.log 'Get download message'
         # Parsing tags
@@ -60,8 +52,9 @@ search = (query, port) ->
     search_results = _.foldl _.values(result),
       (memo, item) ->
         # check if any of the keywords match, if any of the tags match
-        matches = _.intersection(result.keywords, result.tags, tokens).length
-        if matches then memo.push result
+        matches = _.intersection(item.keywords, tokens).length +
+          _.intersection(item.tags, tokens).length
+        if matches then memo.push item
         return memo
       , []
     # search_results now holds the objects that match the search.

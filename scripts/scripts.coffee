@@ -6,7 +6,7 @@ save_url = ->
   tag_value = document.getElementById('octo-meme-tags').value
   des_value = document.getElementById('octo-meme-description').value
   msg =
-    type: 'download'
+    type: 'upload'
     data:
       tag: tag_value
       description: des_value
@@ -66,7 +66,8 @@ create_save_popup = ->
 create_browser_search_item = (data) ->
   list_div = document.createElement 'li'
   list_div.classList.add('octo-meme-browser-search-item')
-  list_div.innerHTML = data.url + ' this is a test' + Math.random()
+  list_div.innerHTML =
+    "#{data.url} #{data.tags.join(' ')} #{data.description}"
   return list_div
 
 ###
@@ -104,13 +105,8 @@ create_browser_popup = ->
       while search_list.firstChild
         search_list.removeChild search_list.firstChild
       console.log 'browser got message', msg
-      msg.results = [
-        {url: 'one'}
-        {url: 'two'}
-        {url: 'three'}
-      ]
       for item in msg.results
-        list_item = create_browser_search_item msg.results
+        list_item = create_browser_search_item item
         search_list.appendChild list_item
       # highlight the first item
       search_list.firstChild.classList.add('octo-meme-search-highlight')
