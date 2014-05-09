@@ -181,8 +181,8 @@ document.addEventListener 'keyup', (evt) ->
     # Ctrl+ o
     if browser_div
       # show browser div
-      browser_div.classList.add('octo-meme-browse-shown')
-      browser_div.classList.remove('octo-meme-browse-hidden')
+      browser_div.classList.add('octo-meme-browser-shown')
+      browser_div.classList.remove('octo-meme-browser-hidden')
     else
       # create browser div and show it
       browser_div = create_browser_popup()
