@@ -8,6 +8,13 @@ Build Instructions
 ===============
 Navigate to `chrome://extensions` in your browser. Click "Load Unpacked Extensions" after enabling developer mode, and choose this folder.
 
+Usage Intstructions
+===============
+Our extension is easy and intuitive. Below are steps outlining how to use the extensions
+
+  1. Load the chrome extension into the chrome web browser (See. Build Instructions)
+  2. To save to ur: press ctrl-s and the blue popup window will popup. Users can specify tags and description associated with the saved url.
+  3. To open saved url: press ctrl-o and the blue search window will popup. Users can then type search terms whcih can be either the word in the url, tags, or description. Results will then populated in the box and users can navigate to them using tab key. By press enter when particular url is highlighted, the url will be opened in new tab. IF the ur l is laready open, the plugin will simply navigate users to the opened tab.
 
 ##Proposal:
 Team members: Kanchalai Tanglertsampan, David Xu
@@ -27,5 +34,3 @@ Team members: Kanchalai Tanglertsampan, David Xu
 ### The Plan
 
 We will be building a chrome extension, so we will be utilizing all of the [developer API's](https://developer.chrome.com/extensions/index) google provides. We will be using LESS.js, coffeescript during development. If necessary. Depending on how complicated the UI will be, we will consider using require.js/bower/grunt, and backbone.js or ember.js as a front-end MVC framework.
-
-
